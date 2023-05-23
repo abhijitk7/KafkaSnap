@@ -1,0 +1,16 @@
+logging:
+  level:
+    root: INFO
+    reactor.netty.http.server.AccessLog: INFO
+
+server:
+  port: 8085
+
+kafka:
+  clusters:
+    - name: local
+      bootstrapServers: localhost:9092
+      zookeeper: localhost:2181
+      schemaRegistry: http://localhost:8085
+      ksqldbServer: http://localhost:8088
+      read-only: true
