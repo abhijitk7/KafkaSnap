@@ -14,3 +14,7 @@ kafka:
       schemaRegistry: http://localhost:8085
       ksqldbServer: http://localhost:8088
       read-only: true
+      properties:
+        security.protocol: SASL_SSL
+        sasl.mechanism: PLAIN
+        sasl.jaas.config: org.apache.kafka.common.security.plain.PlainLoginModule required username=\"userX\" password=\"123456\";
