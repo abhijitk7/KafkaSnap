@@ -8,10 +8,11 @@ import java.util.stream.Collectors;
 
 import org.apache.kafka.clients.admin.TopicDescription;
 import org.apache.kafka.common.KafkaFuture;
-import org.apache.kafka.common.message.AlterPartitionRequestData.PartitionData;
 import org.springframework.stereotype.Service;
 
 import com.cognizant.corelogic.kafkasnap.exception.ClusterNotFoundException;
+import com.cognizant.corelogic.kafkasnap.model.InternalBrokerConfig;
+import com.cognizant.corelogic.kafkasnap.model.InternalTopicConfig;
 import com.cognizant.corelogic.kafkasnap.model.TopicDetailsInfo;
 import com.cognizant.corelogic.kafkasnap.model.TopicPartitionInfo;
 
@@ -23,7 +24,7 @@ public class TopicService {
 
 	private final AdminClientService adminClientService;
 	
-	public List<TopicDetailsInfo> getTopicConfigs( String clusterName ) throws InterruptedException, ExecutionException, ClusterNotFoundException {
+	public List<TopicDetailsInfo> getTopicDetails( String clusterName ) throws InterruptedException, ExecutionException, ClusterNotFoundException {
 		List<TopicDetailsInfo> topicDetailsInfos = new ArrayList<>();
 		Map<String, KafkaFuture<TopicDescription>> topicDescriptionMap = adminClientService.get(clusterName).getTopicDescription(true);
 		TopicDescription topicDescription = null;
@@ -44,5 +45,11 @@ public class TopicService {
 		}
 		
 		return topicDetailsInfos;
+	}
+	
+	public List<InternalTopicConfig> getTopicConfigs( String clusterName ) throws InterruptedException, ExecutionException, ClusterNotFoundException {
+		return adminClientService.get(clusterName).getTopicsConfig().values().stream().findFirst().orElse(List.of()).stream()
+				.map(InternalTopicConfig::from).collect(Collectors.toList()); 
+		
 	}
 }

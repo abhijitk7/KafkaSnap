@@ -4,11 +4,13 @@ import java.time.Instant;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Properties;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.apache.kafka.clients.admin.AdminClient;
 import org.apache.kafka.clients.admin.AdminClientConfig;
+import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -51,6 +53,7 @@ public class AdminClientService {
 		Properties properties = new Properties();
 		if(!Objects.isNull(kafkaCluster.getProperties()))
 			properties.putAll(kafkaCluster.getProperties());
+		properties.put(ConsumerConfig.GROUP_ID_CONFIG, UUID.randomUUID().toString());
 		properties.put(AdminClientConfig.BOOTSTRAP_SERVERS_CONFIG, kafkaCluster.getBootstrapServers());
 		properties.putIfAbsent(AdminClientConfig.REQUEST_TIMEOUT_MS_CONFIG, DEFAULT_CLIENT_TIMEOUT_MS);
 		properties.putIfAbsent(AdminClientConfig.CLIENT_ID_CONFIG,

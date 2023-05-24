@@ -26,7 +26,18 @@ public class TopicController {
 	private TopicService topicService;
 	
 	@GetMapping(value = "/{clusterName}/topic/all")
-	public ResponseEntity<?> connect(@PathVariable(value="clusterName") String clusterName) {
+	public ResponseEntity<?> getTopicDetails(@PathVariable(value="clusterName") String clusterName) {
+		try {
+			return ResponseEntity.ok(topicService.getTopicDetails(clusterName));
+		} catch (InterruptedException | ExecutionException | ClusterNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return ResponseEntity.ok(null);
+	}
+	
+	@GetMapping(value = "/{clusterName}/topic/config")
+	public ResponseEntity<?> getTopicConfigs(@PathVariable(value="clusterName") String clusterName) {
 		try {
 			return ResponseEntity.ok(topicService.getTopicConfigs(clusterName));
 		} catch (InterruptedException | ExecutionException | ClusterNotFoundException e) {
