@@ -2,10 +2,7 @@ package com.cognizant.corelogic.kafkasnap.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.cognizant.corelogic.kafkasnap.enums.SeekDirectionEnum;
 import com.cognizant.corelogic.kafkasnap.exception.ClusterNotFoundException;
@@ -20,6 +17,7 @@ import lombok.RequiredArgsConstructor;
  */
 @RestController
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:4200")
 public class MessageController {
 	
 	@Autowired
