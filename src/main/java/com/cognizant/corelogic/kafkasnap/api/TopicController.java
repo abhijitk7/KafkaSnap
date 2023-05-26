@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cognizant.corelogic.kafkasnap.exception.ClusterNotFoundException;
@@ -51,7 +52,7 @@ public class TopicController {
 	}
 	
 	@PostMapping(value= "/{clusterName}/topic")
-	public ResponseEntity<?> createTopic(@PathVariable(value="clusterName")  String clusterName, TopicCreationDTO topicCreation) {
+	public ResponseEntity<?> createTopic(@PathVariable(value="clusterName")  String clusterName, @RequestBody TopicCreationDTO topicCreation) {
 		try {
 			return ResponseEntity.ok(topicService.createTopic(clusterName, topicCreation));
 		} catch (InterruptedException | ExecutionException | ClusterNotFoundException e) {
