@@ -61,9 +61,6 @@ public class AdminClientWrapper {
 		return client.listTopics(new ListTopicsOptions().listInternal(listInternal)).names().get();
 	}
 
-	public void deleteTopic(String topicName) throws InterruptedException, ExecutionException {
-		client.deleteTopics(List.of(topicName)).all().get();
-	}
 
 	public Map<String, KafkaFuture<TopicDescription>> getTopicDescription(boolean listInternal)
 			throws InterruptedException, ExecutionException {
@@ -140,6 +137,17 @@ public class AdminClientWrapper {
 		return configMap;
 	}
 	
+	public void creatTopic(String clusterName, TopicCreationDTO topicCreation) throws InterruptedException, ExecutionException {
+		var newTopic = new NewTopic(topicCreation.getName(), Optional.of(topicCreation.getPartitions()),
+				Optional.ofNullable(topicCreation.getReplicationFactor()).map(Integer::shortValue))
+						.configs(topicCreation.getConfigs());
+		client.createTopics(List.of(newTopic)).all().get();
+	}
+	
+	public void deleteTopic(String topicName) throws InterruptedException, ExecutionException {
+		client.deleteTopics(List.of(topicName)).all().get();
+	}
+		
 
 	@Value
 	public static class ClusterDescription {
@@ -150,5 +158,8 @@ public class AdminClientWrapper {
 		@Nullable // null, if ACL is disabled
 		Set<AclOperation> authorizedOperations;
 	}
+
+
+	
 
 }

@@ -11,8 +11,8 @@ import org.apache.kafka.common.KafkaFuture;
 import org.springframework.stereotype.Service;
 
 import com.cognizant.corelogic.kafkasnap.exception.ClusterNotFoundException;
-import com.cognizant.corelogic.kafkasnap.model.InternalBrokerConfig;
 import com.cognizant.corelogic.kafkasnap.model.InternalTopicConfig;
+import com.cognizant.corelogic.kafkasnap.model.TopicCreationDTO;
 import com.cognizant.corelogic.kafkasnap.model.TopicDetailsInfo;
 import com.cognizant.corelogic.kafkasnap.model.TopicPartitionInfo;
 
@@ -52,4 +52,16 @@ public class TopicService {
 				.map(InternalTopicConfig::from).collect(Collectors.toList()); 
 		
 	}
+	
+	public List<TopicDetailsInfo> createTopic(String clusterName, TopicCreationDTO topicCreation) throws ClusterNotFoundException, InterruptedException, ExecutionException {
+		adminClientService.get(clusterName).creatTopic(clusterName, topicCreation);
+		return getTopicDetails(clusterName);
+	}
+	
+	public List<TopicDetailsInfo> deleteTopic(String clusterName, String topicName) throws InterruptedException, ExecutionException, ClusterNotFoundException {
+		adminClientService.get(clusterName).deleteTopic(topicName);;
+		return getTopicDetails(clusterName);
+	}
+	
+	
 }
